@@ -1,12 +1,16 @@
 {
-  "name": "starter-deck_js-module",
-  "version": "0.0.0",
-  "description": "Starter-deck for a js module using babel to enable writing in es2015.",
+  "name": "kontinuum-deploy",
+  "version": "0.1.0",
+  "description": "Kontinuum deploy helper",
   "main": "lib/index.js",
-  "directories": {
-    "example": "example"
+  "bin": {
+    "kontinuum-deploy": "./bin/kontinuum_deploy"
   },
-  "dependencies": {},
+  "dependencies": {
+    "bluebird": "^3.4.1",
+    "hbs-templater": "^0.3.0",
+    "yargs": "^4.8.1"
+  },
   "devDependencies": {
     "babel-core": "6.7.6",
     "babel-eslint": "^6.0.4",
@@ -22,7 +26,6 @@
     "should": "^9.0.0"
   },
   "scripts": {
-    "start": "nodemon --watch example --watch src ./example/index.js & babel src --out-dir lib --watch",
     "preversion": "echo \"run tests here\"",
     "version": "npm run prerelease && git add .",
     "postversion": "git push && git push --tags && npm publish",
@@ -33,13 +36,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/you/foo.git"
+    "url": "git+https://github.com/esayemm/kontinuum-deploy.git"
   },
   "author": "Sam Lau",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/you/foo/issues"
+    "url": "https://github.com/esayemm/kontinuum-deploy/issues"
   },
-  "keywords": [],
-  "homepage": "https://github.com/you/foo#readme"
+  "keywords": [
+    "kontinuum"
+  ],
+  "homepage": "https://github.com/esayemm/kontinuum-deploy#readme"
 }
