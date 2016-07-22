@@ -6,6 +6,7 @@ const path = require('path')
 const Promise = require('bluebird')
 const exec = require('child_process').exec
 const execSync = require('child_process').execSync
+const chalk = require('chalk')
 
 const KONTINUUM_URL = `http://kontinuum.samlau-staging.us/deploy`
 
@@ -75,6 +76,9 @@ function main() {
   const tag = execSync(`git rev-parse --short HEAD`).toString().trim()
   const imageName = `${DOCKER_USER}/${SERVICE}:${tag}`
 
+  console.log(chalk.green(tag))
+  console.log(chalk.green(imageName))
+
   const outputPath = path.resolve(output)
   compile({
     params: {
@@ -84,10 +88,15 @@ function main() {
     output: outputPath,
   })
 
-  execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`)
-  execSync(`docker build -t ${imageName} .`)
-  execSync(`docker push ${imageName}`)
-  execSync(`curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@${output}" -H "token=${KONTINUUM_TOKEN}" ${KONTINUUM_URL}`)
+  let stdout
+  stdout = execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`).toString()
+  console.log(stdout)
+  stdout = execSync(`docker build -t ${imageName} .`)
+  console.log(stdout)
+  stdout = execSync(`docker push ${imageName}`)
+  console.log(stdout)
+  stdout = execSync(`curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@${output}" -H "token=${KONTINUUM_TOKEN}" ${KONTINUUM_URL}`)
+  console.log(stdout)
 }
 
 main()
