@@ -46,69 +46,48 @@ function checkRequiredArgs(argv) {
     console.log(`Required --params`)
     return false
   }
-  // if (
-  //   !process.env.DOCKER_EMAIL
-  //   || !process.env.DOCKER_PASS
-  //   || !process.env.DOCKER_USER
-  //   || !process.env.SERVICE
-  //   || !process.env.KONTINUUM_TOKEN
-  // ) {
-  //   console.log(`Required ENV var missing DOCKER_EMAIL, DOCKER_PASS, DOCKER_USER, SERVICE, KONTINUUM_TOKEN`)
-  //   return false
-  // }
+  if (
+    !process.env.DOCKER_EMAIL
+    || !process.env.DOCKER_PASS
+    || !process.env.DOCKER_USER
+    || !process.env.SERVICE
+    || !process.env.KONTINUUM_TOKEN
+  ) {
+    console.log(`Required ENV var missing DOCKER_EMAIL, DOCKER_PASS, DOCKER_USER, SERVICE, KONTINUUM_TOKEN`)
+    return false
+  }
 
   return true
 }
 
-function execPromise(command) {
-  return new Promise((resolve, reject) => {
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        reject(error)
-        return
-      }
-      if (stderr) {
-        reject(new Error(stderr))
-        return
-      }
-      if (stdout) {
-        resolve(stdout)
-        return
-      }
-      resolve()
-    })
-  })
-}
-
 function main() {
-  console.log(process.cwd())
-  // if (!checkRequiredArgs(argv)) return
-  //
-  // const input = argv.input
-  // const output = argv.output
-  // const params = argv.params
-  // const DOCKER_EMAIL = process.env.DOCKER_EMAIL
-  // const DOCKER_PASS = process.env.DOCKER_PASS
-  // const DOCKER_USER = process.env.DOCKER_USER
-  // const SERVICE = process.env.SERVICE
-  // const KONTINUUM_TOKEN = process.env.KONTINUUM_TOKEN
-  //
-  // const tag = execSync(`git rev-parse --short HEAD`).toString().trim()
-  // const imageName = `${DOCKER_USER}/${SERVICE}:${tag}`
-  //
-  // const outputPath = path.resolve(output)
-  // compile({
-  //   params: {
-  //     IMAGE_NAME: imageName,
-  //   },
-  //   input: path.resolve(input),
-  //   output: outputPath,
-  // })
-  //
-  // execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`)
-  // execSync(`docker build -t ${imageName} .`)
-  // execSync(`docker push ${imageName}`)
-  // execSync(`curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@${output}" -H "token=${KONTINUUM_TOKEN}" ${KONTINUUM_URL}`)
+  if (!checkRequiredArgs(argv)) return
+
+  const input = argv.input
+  const output = argv.output
+  const params = argv.params
+  const DOCKER_EMAIL = process.env.DOCKER_EMAIL
+  const DOCKER_PASS = process.env.DOCKER_PASS
+  const DOCKER_USER = process.env.DOCKER_USER
+  const SERVICE = process.env.SERVICE
+  const KONTINUUM_TOKEN = process.env.KONTINUUM_TOKEN
+
+  const tag = execSync(`git rev-parse --short HEAD`).toString().trim()
+  const imageName = `${DOCKER_USER}/${SERVICE}:${tag}`
+
+  const outputPath = path.resolve(output)
+  compile({
+    params: {
+      IMAGE_NAME: imageName,
+    },
+    input: path.resolve(input),
+    output: outputPath,
+  })
+
+  execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`)
+  execSync(`docker build -t ${imageName} .`)
+  execSync(`docker push ${imageName}`)
+  execSync(`curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@${output}" -H "token=${KONTINUUM_TOKEN}" ${KONTINUUM_URL}`)
 }
 
 main()
