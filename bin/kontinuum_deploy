@@ -35,6 +35,11 @@ function checkRequiredArgs(argv) {
     return false
   }
 
+  if (!argv.service) {
+    console.log(`Required --service`)
+    return false
+  }
+
   if (!argv.input) {
     console.log(`Required --input`)
     return false
@@ -47,10 +52,9 @@ function checkRequiredArgs(argv) {
     !process.env.DOCKER_EMAIL
     || !process.env.DOCKER_PASS
     || !process.env.DOCKER_USER
-    || !process.env.SERVICE
     || !process.env.KONTINUUM_TOKEN
   ) {
-    console.log(`Required ENV var missing DOCKER_EMAIL, DOCKER_PASS, DOCKER_USER, SERVICE, KONTINUUM_TOKEN`)
+    console.log(`Required ENV var missing DOCKER_EMAIL, DOCKER_PASS, DOCKER_USER, KONTINUUM_TOKEN`)
     return false
   }
 
@@ -62,14 +66,14 @@ function main() {
 
   const input = argv.input
   const output = argv.output
+  const service = argv.service
   const DOCKER_EMAIL = process.env.DOCKER_EMAIL
   const DOCKER_PASS = process.env.DOCKER_PASS
   const DOCKER_USER = process.env.DOCKER_USER
-  const SERVICE = process.env.SERVICE
   const KONTINUUM_TOKEN = process.env.KONTINUUM_TOKEN
 
   const tag = execSync(`git rev-parse --short HEAD`).toString().trim()
-  const imageName = `${DOCKER_USER}/${SERVICE}:${tag}`
+  const imageName = `${DOCKER_USER}/${service}:${tag}`
 
   console.log(chalk.green(tag))
   console.log(chalk.green(imageName))
