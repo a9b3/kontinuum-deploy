@@ -43,10 +43,6 @@ function checkRequiredArgs(argv) {
     console.log(`Required --output`)
     return false
   }
-  if (!argv.params) {
-    console.log(`Required --params`)
-    return false
-  }
   if (
     !process.env.DOCKER_EMAIL
     || !process.env.DOCKER_PASS
@@ -66,7 +62,6 @@ function main() {
 
   const input = argv.input
   const output = argv.output
-  const params = argv.params
   const DOCKER_EMAIL = process.env.DOCKER_EMAIL
   const DOCKER_PASS = process.env.DOCKER_PASS
   const DOCKER_USER = process.env.DOCKER_USER
