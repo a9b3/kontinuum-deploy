@@ -8,7 +8,7 @@ const exec = require('child_process').exec
 const execSync = require('child_process').execSync
 const chalk = require('chalk')
 
-const KONTINUUM_URL = `http://kontinuum.samlau-staging.us/deploy`
+const KONTINUUM_URL = `http://kontinuum.staging-samlau.us/deploy`
 
 function commandExists(command) {
   try {
