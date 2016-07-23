@@ -94,7 +94,7 @@ function main() {
   console.log(stdout)
   stdout = execSync(`docker push ${imageName}`)
   console.log(stdout)
-  stdout = execSync(`curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@${output}" -H "token=${KONTINUUM_TOKEN}" ${KONTINUUM_URL}`)
+  stdout = execSync(`curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@${output}" -H "token: ${KONTINUUM_TOKEN}" ${KONTINUUM_URL}`)
   console.log(stdout)
 }
 
