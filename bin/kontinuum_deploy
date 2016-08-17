@@ -35,19 +35,21 @@ function checkRequiredArgs(argv) {
     return false
   }
 
-  if (!argv.service) {
-    console.log(`Required --service`)
+  const hasAllArgs = [
+    'service',
+    'input',
+    'output',
+  ].every(req => {
+    if (!argv[req]) {
+      console.log(`Required --${req}`)
+      return false
+    }
+    return true
+  })
+  if (!hasAllArgs) {
     return false
   }
 
-  if (!argv.input) {
-    console.log(`Required --input`)
-    return false
-  }
-  if (!argv.output) {
-    console.log(`Required --output`)
-    return false
-  }
   if (
     !process.env.DOCKER_EMAIL
     || !process.env.DOCKER_PASS
@@ -67,6 +69,7 @@ function main() {
   const input = argv.input
   const output = argv.output
   const service = argv.service
+  const dockerFile = argv.dockerFile || '.'
   const DOCKER_EMAIL = process.env.DOCKER_EMAIL
   const DOCKER_PASS = process.env.DOCKER_PASS
   const DOCKER_USER = process.env.DOCKER_USER
@@ -90,7 +93,7 @@ function main() {
   let stdout
   stdout = execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`).toString()
   console.log(stdout)
-  stdout = execSync(`docker build -t ${imageName} .`)
+  stdout = execSync(`docker build -t ${imageName} ${dockerFile}`)
   console.log(stdout)
   stdout = execSync(`docker push ${imageName}`)
   console.log(stdout)

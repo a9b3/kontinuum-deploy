@@ -24,6 +24,8 @@ KONTINUUM_TOKEN=<kontinuum token>
 	--service <service name>
 ```
 
+###Arguments
+
 - input: should be a kubernetes yaml file, what you will be given is IMAGE_NAME so your input should look like the following
 
 ```yaml
@@ -33,6 +35,7 @@ image: {{IMAGE_NAME}}
 - output: is where the compiled yaml file will go, preferably right next to the template file so you can manually adjust it if necessary.
 
 - service: will be the name of the service pushed to docker hub `username/<service>:tag`
+- dockerFile(optional): location of Dockerfile
 
 ## Continious Deployment
 
