@@ -78,9 +78,12 @@ function main() {
   const tag = execSync(`git rev-parse --short HEAD`).toString().trim()
   const imageName = `${DOCKER_USER}/${service}:${tag}`
 
-  console.log(chalk.green(tag))
-  console.log(chalk.green(imageName))
+  console.log(``)
+  console.log(chalk.green(`new tag: ${tag}`))
+  console.log(chalk.green(`docker image: ${imageName}`))
 
+  console.log(``)
+  console.log(chalk.green(`compiling kubernetes yaml file`))
   const outputPath = path.resolve(output)
   compile({
     params: {
@@ -91,6 +94,7 @@ function main() {
     overwrite: true,
   })
 
+  console.log(``)
   console.log(chalk.green(`Logging into docker as ${DOCKER_USER}`), '\n')
   execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`, {
     stdio: [0, 1, 2],
