@@ -90,7 +90,7 @@ function main() {
     output: outputPath,
   })
 
-  console.log(chalk.green(`Logging into docker as ${DOCKER_PASS}`), '\n')
+  console.log(chalk.green(`Logging into docker as ${DOCKER_USER}`), '\n')
   execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`, {
     stdio: [0, 1, 2],
   })
