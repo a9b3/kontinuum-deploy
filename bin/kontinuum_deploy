@@ -90,15 +90,25 @@ function main() {
     output: outputPath,
   })
 
-  let stdout
-  stdout = execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`).toString()
-  console.log(stdout)
-  stdout = execSync(`docker build -t ${imageName} ${dockerFile}`)
-  console.log(stdout)
-  stdout = execSync(`docker push ${imageName}`)
-  console.log(stdout)
-  stdout = execSync(`curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@${output}" -H "token: ${KONTINUUM_TOKEN}" ${KONTINUUM_URL}`)
-  console.log(stdout)
+  console.log(chalk.green(`Logging into docker as ${DOCKER_PASS}`), '\n')
+  execSync(`docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}`, {
+    stdio: [0, 1, 2],
+  })
+  console.log(``)
+  console.log(chalk.green(`Building docker image ${imageName} at ${dockerFile}`), '\n')
+  execSync(`docker build -t ${imageName} ${dockerFile}`, {
+    stdio: [0, 1, 2],
+  })
+  console.log(``)
+  console.log(chalk.green(`Pushing docker image to docker hub`), '\n')
+  execSync(`docker push ${imageName}`, {
+    stdio: [0, 1, 2],
+  })
+  console.log(``)
+  console.log(chalk.green(`Pushing to kontinuum server`), '\n')
+  execSync(`curl -i -X POST -H "Content-Type: multipart/form-data" -F "data=@${output}" -H "token: ${KONTINUUM_TOKEN}" ${KONTINUUM_URL}`, {
+    stdio: [0, 1, 2],
+  })
 }
 
 main()
